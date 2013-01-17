@@ -1,0 +1,19 @@
+{
+  "name": "jade-renderer",
+  "version": "0.0.1",
+  "description": "Render a collection of Jade templated from one location to another",
+  "main": "jade-renderer.js",
+  "scripts": {
+    "test": "./node_modules/.bin/mocha test"
+  },
+  "repository": "",
+  "author": "Ben Gourley",
+  "license": "BSD",
+  "dependencies": {
+    "async": "~0.1.22"
+  },
+  "devDependencies": {
+    "jade": "*",
+    "mocha": "~1"
+  }
+}
