@@ -17,6 +17,7 @@ var render = require('jade-renderer')
 ### render(pages, options, cb)
 
 - `pages` an array of 'pages' to render. 'pages' look like this:
+
   ```js
   { template: 'path/to/template'
   , data:
@@ -28,6 +29,7 @@ var render = require('jade-renderer')
     }
   }
   ```
+
 - `options` is an options hash
   - `src` the source directory, defaults to PWD
   - `dest` the destination directory, defaults to PWD

@@ -4,37 +4,50 @@ var async = require('async')
   , jade = require('jade')
   , join = require('path').join
   , fs = require('fs')
-  , defaultLogger =
-      { debug: console.log
-      , info: console.log
-      , warn: console.log
-      , error: console.log
-      }
+  , Emitter = require('events').EventEmitter
+  , defaults = { jadeOptions: { pretty: true } }
 
 function render(pages, options, cb) {
 
-  var logger = options.logger || defaultLogger
+  var emitter = new Emitter()
 
-  async.forEach(pages, function (p, callback) {
-    var src = join(options.src, p.template + '.jade')
-      , dest = join(options.dest, p.template + '.html')
+  // Extend defaults with user options
+  options.__proto__ = defaults
 
-    fs.readFile(src, 'utf8', function (err, data) {
-      if (err) return callback(err)
-      var template = jade.compile(data,
-        { filename: src
-        , pretty: true
-        })
+  process.nextTick(function () {
 
-      fs.writeFile(dest, template(p.data), function (err) {
-        if (!err) {
-          logger.debug('Rendered ' + p.template + '.jade → ' + p.template + '.html')
+    async.forEach(pages, function (p, callback) {
+      var src = join(options.src, p.template + '.jade')
+        , dest = join(options.dest, p.template + '.html')
+
+      fs.readFile(src, 'utf8', function (err, data) {
+        emitter.emit('log', 'Reading ' + src, 'debug')
+        if (err) return callback(err)
+        try {
+          emitter.emit('log', 'Compiling ' + src, 'debug')
+          var jadeOptions = options.jadeOptions
+          jadeOptions.filename = src
+          var template = jade.compile(data, jadeOptions)
+
+          fs.writeFile(dest, template(p.data), function (err) {
+            emitter.emit('log', 'Writing ' + src, 'debug')
+            if (!err) {
+              emitter.emit('log'
+                , 'Rendered ' + p.template + '.jade → ' + p.template + '.html'
+                , 'info')
+            }
+            callback(err)
+          })
+        } catch (e) {
+          callback(e)
         }
-        callback(err)
+
       })
 
-    })
+    }, cb)
 
-  }, cb)
+  })
+
+  return emitter
 
 }
