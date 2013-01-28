@@ -1,13 +1,14 @@
-![Build Status](https://travis-ci.org/bengourley/node-jade-renderer.png?branch=master)
+[![Build Status](https://travis-ci.org/bengourley/node-jade-renderer.png?branch=master)](https://travis-ci.org/bengourley/node-jade-renderer)
 
+Render batches of jade templates, with custom options and data.
 
-## Install:
+## Install
 
 ```
 npm install jade-renderer
 ```
 
-## Usage:
+## Usage
 
 ```js
 var render = require('jade-renderer')
@@ -42,7 +43,8 @@ render(
   , { src: __dirname
     , dest: __dirname + '/html/'
     }
-  , function () {
+  , function (err) {
+    if (err) throw err
     console.log('done!')
   })
 ```
