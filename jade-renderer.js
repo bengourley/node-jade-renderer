@@ -28,7 +28,8 @@ function render(pages, options, cb) {
           var jadeOptions = options.jadeOptions
           jadeOptions.filename = src
           var template = jade.compile(data, jadeOptions)
-
+          if (!p.data) p.data = {}
+          p.data.__proto__ = options.locals
           fs.writeFile(dest, template(p.data), function (err) {
             emitter.emit('log', 'Writing ' + src, 'debug')
             if (!err) {

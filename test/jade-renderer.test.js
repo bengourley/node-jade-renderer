@@ -8,7 +8,9 @@ describe('render()', function () {
 
   beforeEach(function (done) {
     fs.unlink(join(__dirname, 'fixtures', 'html', 'index.html'), function () {
-      done()
+      fs.unlink(join(__dirname, 'fixtures', 'html', 'date.html'), function () {
+        done()
+      })
     })
   })
 
@@ -65,9 +67,26 @@ describe('render()', function () {
       })
   })
 
+    it('should support view helpers', function (done) {
+    render([ { template: 'date' } ],
+      { src: join(__dirname, 'fixtures')
+      , dest: join(__dirname, 'fixtures', 'html')
+      , jadeOptions: { pretty: false }
+      , locals: { version: function () { return process.versions.node } }
+      }, function (err) {
+        fs.readFile(join(__dirname, 'fixtures', 'html', 'date.html'), function (err, data) {
+          assert(!err)
+          assert.equal(data, process.versions.node)
+          done()
+        })
+      })
+  })
+
   afterEach(function (done) {
     fs.unlink(join(__dirname, 'fixtures', 'html', 'index.html'), function () {
-      done()
+      fs.unlink(join(__dirname, 'fixtures', 'html', 'date.html'), function () {
+        done()
+      })
     })
   })
 
