@@ -35,7 +35,7 @@ function render(pages, options, cb) {
             if (!err) {
               emitter.emit('log'
                 , 'Rendered ' + p.template + '.jade → ' + p.template + '.html'
-                , 'info')
+                , 'debug')
             }
             callback(err)
           })
