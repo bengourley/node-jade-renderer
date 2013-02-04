@@ -1,6 +1,6 @@
 {
   "name": "jade-renderer",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Render a collection of Jade templated from one location to another",
   "main": "jade-renderer.js",
   "scripts": {
